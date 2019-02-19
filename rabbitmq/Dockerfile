@@ -33,7 +33,7 @@ RUN adduser -u 1001 -r -c "RabbitMQ User" -d /var/lib/rabbitmq -g rabbitmq rabbi
 RUN mkdir -p /var/lib/rabbitmq /etc/rabbitmq
 RUN mv *.ez ${RABBITMQ_HOME}/plugins
 RUN ${RABBITMQ_HOME}/sbin/rabbitmq-plugins enable autocluster --offline
-RUN ${RABBITMQ_HOME}/sbin/rabbitmq-plugins enable management --offline
+RUN ${RABBITMQ_HOME}/sbin/rabbitmq-plugins enable rabbitmq_management --offline
 RUN chown -R 1001:0 /var/lib/rabbitmq /etc/rabbitmq ${RABBITMQ_HOME}/plugins
 RUN chmod -R g=u /var/lib/rabbitmq /etc/rabbitmq
 RUN rm -rf /var/lib/rabbitmq/.erlang.cookie
