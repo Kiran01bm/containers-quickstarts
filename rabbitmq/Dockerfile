@@ -1,4 +1,4 @@
-FROM rhel:7.4
+FROM registry.access.redhat.com/rhel:7.4
 
 ARG ERLANG_VERSION=20.1.1
 ARG RABBITMQ_AUTOCLUSTER_VERSION=0.10.0
@@ -15,40 +15,30 @@ ENV GPG_KEY="0A9AF2115F4687BD29803A206B73A36E6026DFCA" \
     RABBITMQ_LOGS=- \
     RABBITMQ_SASL_LOGS=-
 
-RUN set -xe && \
-    curl -LO https://github.com/rabbitmq/erlang-rpm/releases/download/v${ERLANG_VERSION}/erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm && \
-    rpm -Uvh ./erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm && \
-    rm *.rpm && \
-    curl -Lo rabbitmq-server.tar.xz https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz && \
-    curl -Lo rabbitmq-server.tar.xz.asc https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz.asc && \
-    ls -al && \
-    curl -Lo autocluster.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/autocluster-${RABBITMQ_AUTOCLUSTER_VERSION}.ez && \
-    curl -Lo rabbitmq_aws.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/rabbitmq_aws-${RABBITMQ_AUTOCLUSTER_VERSION}.ez && \
-    export GNUPGHOME="$(mktemp -d)" && \
-    env | grep GNUPG && \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" && \
-    gpg --batch --verify rabbitmq-server.tar.xz.asc rabbitmq-server.tar.xz && \
-    rm -rf "$GNUPGHOME" && \
-    mkdir -p "$RABBITMQ_HOME" && \
-    tar \
-      --extract \
-      --verbose \
-      --file rabbitmq-server.tar.xz \
-      --directory "$RABBITMQ_HOME" \
-      --strip-components 1 && \
-    rm rabbitmq-server.tar.xz* && \
-    grep -qE '^SYS_PREFIX=\$\{RABBITMQ_HOME\}$' "$RABBITMQ_HOME/sbin/rabbitmq-defaults" && \
-    sed -ri 's!^(SYS_PREFIX=).*$!\1!' "$RABBITMQ_HOME/sbin/rabbitmq-defaults" && \
-    grep -qE '^SYS_PREFIX=$' "$RABBITMQ_HOME/sbin/rabbitmq-defaults" && \
-    groupadd --system rabbitmq && \
-    adduser -u 1001 -r -c "RabbitMQ User" -d /var/lib/rabbitmq -g rabbitmq rabbitmq && \
-    mkdir -p /var/lib/rabbitmq /etc/rabbitmq && \
-    mv *.ez ${RABBITMQ_HOME}/plugins && \
-    ${RABBITMQ_HOME}/sbin/rabbitmq-plugins enable autocluster --offline && \
-    chown -R 1001:0 /var/lib/rabbitmq /etc/rabbitmq ${RABBITMQ_HOME}/plugins && \
-    chmod -R g=u /var/lib/rabbitmq /etc/rabbitmq && \
-    rm -rf /var/lib/rabbitmq/.erlang.cookie && \
-    ln -sf "$RABBITMQ_HOME/plugins" /plugins
+RUN    set -xe
+RUN    curl -LO https://github.com/rabbitmq/erlang-rpm/releases/download/v${ERLANG_VERSION}/erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
+RUN    rpm -Uvh ./erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
+RUN    rm *.rpm
+RUN    curl -Lo rabbitmq-server.tar.xz https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz
+RUN    curl -Lo rabbitmq-server.tar.xz.asc https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz.asc
+RUN    ls -al
+RUN    curl -Lo autocluster.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/autocluster-${RABBITMQ_AUTOCLUSTER_VERSION}.ez
+RUN    curl -Lo rabbitmq_aws.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/rabbitmq_aws-${RABBITMQ_AUTOCLUSTER_VERSION}.ez
+RUN    mkdir -p "$RABBITMQ_HOME"
+RUN    tar --extract --verbose --file rabbitmq-server.tar.xz --directory "$RABBITMQ_HOME" --strip-components 1
+RUN    rm rabbitmq-server.tar.xz*
+RUN    grep -qE '^SYS_PREFIX=\$\{RABBITMQ_HOME\}$' "$RABBITMQ_HOME/sbin/rabbitmq-defaults"
+RUN    sed -ri 's!^(SYS_PREFIX=).*$!\1!' "$RABBITMQ_HOME/sbin/rabbitmq-defaults"
+RUN    grep -qE '^SYS_PREFIX=$' "$RABBITMQ_HOME/sbin/rabbitmq-defaults"
+RUN    groupadd --system rabbitmq
+RUN    adduser -u 1001 -r -c "RabbitMQ User" -d /var/lib/rabbitmq -g rabbitmq rabbitmq
+RUN    mkdir -p /var/lib/rabbitmq /etc/rabbitmq
+RUN    mv *.ez ${RABBITMQ_HOME}/plugins
+RUN    ${RABBITMQ_HOME}/sbin/rabbitmq-plugins enable autocluster --offline
+RUN    chown -R 1001:0 /var/lib/rabbitmq /etc/rabbitmq ${RABBITMQ_HOME}/plugins
+RUN    chmod -R g=u /var/lib/rabbitmq /etc/rabbitmq
+RUN    rm -rf /var/lib/rabbitmq/.erlang.cookie
+RUN    ln -sf "$RABBITMQ_HOME/plugins" /plugins
 
 COPY docker-entrypoint.sh /usr/local/bin/
 USER 1001
