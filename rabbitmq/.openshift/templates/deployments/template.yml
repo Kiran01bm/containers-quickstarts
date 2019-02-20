@@ -45,6 +45,10 @@ objects:
       port: 25672
       protocol: TCP
       targetPort: 25672
+    - name: 15672-http
+      port: 15672
+      protocol: TCP
+      targetPort: 15672
     selector:
       application: "${APPLICATION_NAME}"
     sessionAffinity: None
@@ -83,11 +87,15 @@ objects:
             value: rabbit@$(MY_POD_IP)
           - name: RABBITMQ_USE_LONGNAME
             value: "true"
-          image: "${APPLICATION_NAME}:${RABBITMQ_VERSION}"
-          imagePullPolicy: Always
+          #image: "${APPLICATION_NAME}:${RABBITMQ_VERSION}"
+          #image: "172.30.1.1:5000/rabbitmq/${APPLICATION_NAME}:${RABBITMQ_VERSION}"
+          image: "docker-registry.default.svc:5000/rabbitmq/${APPLICATION_NAME}:${RABBITMQ_VERSION}"
+          imagePullPolicy: Never
           name: "${APPLICATION_NAME}"
           ports:
           - containerPort: 25672
+            protocol: TCP
+          - containerPort: 15672
             protocol: TCP
           - containerPort: 4369
             protocol: TCP
@@ -101,19 +109,14 @@ objects:
           volumeMounts:
           - name: mnesia
             mountPath: /var/lib/rabbitmq/mnesia
+        volumes:
+        - name: mnesia
+          emptyDir: {}
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
         terminationGracePeriodSeconds: 10
-    volumeClaimTemplates:
-    - metadata:
-        name: mnesia
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 1Gi
 parameters:
 - description: The name for the application.
   name: APPLICATION_NAME
