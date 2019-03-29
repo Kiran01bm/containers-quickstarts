@@ -90,7 +90,7 @@ objects:
           #image: "${APPLICATION_NAME}:${RABBITMQ_VERSION}"
           #image: "172.30.1.1:5000/rabbitmq/${APPLICATION_NAME}:${RABBITMQ_VERSION}"
           image: "docker-registry.default.svc:5000/rabbitmq/${APPLICATION_NAME}:${RABBITMQ_VERSION}"
-          imagePullPolicy: Never
+          #imagePullPolicy: Never
           name: "${APPLICATION_NAME}"
           ports:
           - containerPort: 25672
