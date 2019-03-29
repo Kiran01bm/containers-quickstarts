@@ -18,8 +18,10 @@ RUN set -xe
 RUN curl -LO https://github.com/rabbitmq/erlang-rpm/releases/download/v${ERLANG_VERSION}/erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
 RUN rpm -Uvh ./erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
 RUN rm *.rpm
-RUN curl -Lo rabbitmq-server.tar.xz https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz
-RUN curl -Lo rabbitmq-server.tar.xz.asc https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz.asc
+# RUN curl -Lo rabbitmq-server.tar.xz https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz
+# RUN curl -Lo rabbitmq-server.tar.xz.asc https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz.asc
+COPY rabbitmq-server-generic-unix-3.6.12.tar.xz rabbitmq-server.tar.xz
+COPY rabbitmq-server-generic-unix-3.6.12.tar.xz.asc rabbitmq-server.tar.xz.asc
 RUN curl -Lo autocluster.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/autocluster-${RABBITMQ_AUTOCLUSTER_VERSION}.ez
 RUN curl -Lo rabbitmq_aws.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/rabbitmq_aws-${RABBITMQ_AUTOCLUSTER_VERSION}.ez
 RUN mkdir -p "$RABBITMQ_HOME"
