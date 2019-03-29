@@ -135,4 +135,4 @@ parameters:
 - description: RabbitMQ version to build
   name: RABBITMQ_VERSION
   required: true
-  value: 3.6.12
+  value: 3.6.15
