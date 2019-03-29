@@ -2,7 +2,7 @@ FROM registry.access.redhat.com/rhel:7.4
 
 ARG ERLANG_VERSION=20.1.1
 ARG RABBITMQ_AUTOCLUSTER_VERSION=0.10.0
-ARG RABBITMQ_VERSION=3.6.12
+ARG RABBITMQ_VERSION=3.6.15
 
 LABEL io.k8s.description="Lightweight open source message broker" \
     io.k8s.display-name="RabbitMQ" \
@@ -20,8 +20,8 @@ RUN rpm -Uvh ./erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
 RUN rm *.rpm
 # RUN curl -Lo rabbitmq-server.tar.xz https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz
 # RUN curl -Lo rabbitmq-server.tar.xz.asc https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz.asc
-COPY rabbitmq-server-generic-unix-3.6.12.tar.xz rabbitmq-server.tar.xz
-COPY rabbitmq-server-generic-unix-3.6.12.tar.xz.asc rabbitmq-server.tar.xz.asc
+COPY rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz rabbitmq-server.tar.xz
+COPY rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz.asc rabbitmq-server.tar.xz.asc
 RUN curl -Lo autocluster.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/autocluster-${RABBITMQ_AUTOCLUSTER_VERSION}.ez
 RUN curl -Lo rabbitmq_aws.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/rabbitmq_aws-${RABBITMQ_AUTOCLUSTER_VERSION}.ez
 RUN mkdir -p "$RABBITMQ_HOME"
