@@ -109,9 +109,6 @@ objects:
           volumeMounts:
           - name: mnesia
             mountPath: /var/lib/rabbitmq/mnesia
-        volumes:
-        - name: mnesia
-          emptyDir: {}
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
@@ -119,7 +116,7 @@ objects:
         terminationGracePeriodSeconds: 10
   volumeClaimTemplates:
   - metadata:
-      name: storage
+      name: mnesia
       annotations:
         volume.beta.kubernetes.io/storage-class: rabbitmq
     spec:
