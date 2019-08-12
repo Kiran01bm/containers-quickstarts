@@ -162,7 +162,7 @@ if [ "$(hostname)" != "$(hostname -s)" ]; then
 	: "${RABBITMQ_USE_LONGNAME:=true}"
 fi
 
-export RABBITMQ_NODENAME=rabbitmq@`hostname`
+export RABBITMQ_NODENAME=rabbit@`hostname`
 echo "Node name is $RABBITMQ_NODENAME"
 
 if [ "${RABBITMQ_ERLANG_COOKIE:-}" ]; then
