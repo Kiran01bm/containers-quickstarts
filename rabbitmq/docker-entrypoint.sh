@@ -162,6 +162,8 @@ if [ "$(hostname)" == "$(hostname -s)" ]; then
 	: "${RABBITMQ_USE_LONGNAME:=true}"
 fi
 
+export RABBITMQ_NODENAME=rabbitmq@`hostname`
+
 if [ "${RABBITMQ_ERLANG_COOKIE:-}" ]; then
 	cookieFile='/var/lib/rabbitmq/.erlang.cookie'
 	if [ -e "$cookieFile" ]; then
