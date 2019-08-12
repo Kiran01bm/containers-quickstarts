@@ -163,6 +163,7 @@ if [ "$(hostname)" == "$(hostname -s)" ]; then
 fi
 
 export RABBITMQ_NODENAME=rabbitmq@`hostname`
+echo "Node name is $RABBITMQ_NODENAME"
 
 if [ "${RABBITMQ_ERLANG_COOKIE:-}" ]; then
 	cookieFile='/var/lib/rabbitmq/.erlang.cookie'
@@ -404,5 +405,7 @@ if [ "$haveSslConfig" ] && [ -f "$combinedSsl" ]; then
 	export RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS="${RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS:-} $sslErlArgs"
 	export RABBITMQ_CTL_ERL_ARGS="${RABBITMQ_CTL_ERL_ARGS:-} $sslErlArgs"
 fi
+
+echo "Printing arge --> $@"
 
 exec "$@"
