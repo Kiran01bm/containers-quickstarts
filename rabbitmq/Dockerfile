@@ -18,6 +18,11 @@ RUN set -xe
 RUN curl -LO https://github.com/rabbitmq/erlang-rpm/releases/download/v${ERLANG_VERSION}/erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
 RUN rpm -Uvh ./erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
 RUN rm *.rpm
+
+COPY hostname-3.13-3.el7.x86_64.rpm hostname-3.13-3.el7.x86_64.rpm
+RUN rpm -Uvh ./hostname-3.13-3.el7.x86_64.rpm
+RUN rm *.rpm
+
 # RUN curl -Lo rabbitmq-server.tar.xz https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz
 # RUN curl -Lo rabbitmq-server.tar.xz.asc https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz.asc
 COPY rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz rabbitmq-server.tar.xz
