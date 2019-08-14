@@ -31,6 +31,15 @@ COPY hostname-3.13-3.el7.x86_64.rpm hostname-3.13-3.el7.x86_64.rpm
 RUN rpm -Uvh ./hostname-3.13-3.el7.x86_64.rpm
 RUN rm *.rpm
 
+COPY socat-1.7.3.2-2.el7.x86_64.rpm socat-1.7.3.2-2.el7.x86_64.rpm
+RUN rpm -Uvh ./socat-1.7.3.2-2.el7.x86_64.rpm
+RUN rm *.rpm
+
+COPY logrotate-3.8.6-17.el7.x86_64.rpm logrotate-3.8.6-17.el7.x86_64.rpm
+RUN rpm -Uvh ./logrotate-3.8.6-17.el7.x86_64.rpm
+RUN rm *.rpm
+
+
 # RUN curl -Lo rabbitmq-server.tar.xz https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz
 # RUN curl -Lo rabbitmq-server.tar.xz.asc https://www.rabbitmq.com/releases/rabbitmq-server/v${RABBITMQ_VERSION}/rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz.asc
 COPY rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz rabbitmq-server.tar.xz
