@@ -23,6 +23,10 @@ COPY hostname-3.13-3.el7.x86_64.rpm hostname-3.13-3.el7.x86_64.rpm
 RUN rpm -Uvh ./hostname-3.13-3.el7.x86_64.rpm
 RUN rm *.rpm
 
+COPY tcp_wrappers-libs-7.6-77.el7.x86_64.rpm tcp_wrappers-libs-7.6-77.el7.x86_64.rpm
+RUN rpm -Uvh ./tcp_wrappers-libs-7.6-77.el7.x86_64.rpm
+RUN rm *.rpm
+
 COPY socat-1.7.3.2-2.el7.x86_64.rpm socat-1.7.3.2-2.el7.x86_64.rpm
 RUN rpm -Uvh ./socat-1.7.3.2-2.el7.x86_64.rpm
 RUN rm *.rpm
