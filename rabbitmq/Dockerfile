@@ -15,8 +15,16 @@ ENV HOME=/var/lib/rabbitmq \
     RABBITMQ_SASL_LOGS=-
 
 RUN set -xe
-RUN curl -LO https://github.com/rabbitmq/erlang-rpm/releases/download/v${ERLANG_VERSION}/erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
-RUN rpm -Uvh ./erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
+#RUN curl -LO https://github.com/rabbitmq/erlang-rpm/releases/download/v${ERLANG_VERSION}/erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
+#RUN rpm -Uvh ./erlang-${ERLANG_VERSION}-1.el7.centos.x86_64.rpm
+#RUN rm *.rpm
+
+COPY erlang-20.3.8.14-1.el7.centos.x86_64.rpm erlang-20.3.8.14-1.el7.centos.x86_64.rpm
+RUN rpm -Uvh ./erlang-20.3.8.14-1.el7.centos.x86_64.rpm
+RUN rm *.rpm
+
+COPY rabbitmq-server-3.7.14-1.el7.noarch.rpm rabbitmq-server-3.7.14-1.el7.noarch.rpm
+RUN rpm -Uvh ./rabbitmq-server-3.7.14-1.el7.noarch.rpm
 RUN rm *.rpm
 
 COPY hostname-3.13-3.el7.x86_64.rpm hostname-3.13-3.el7.x86_64.rpm
