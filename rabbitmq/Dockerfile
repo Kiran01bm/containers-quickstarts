@@ -49,9 +49,9 @@ RUN rm *.rpm
 # COPY rabbitmq-server-generic-unix-${RABBITMQ_VERSION}.tar.xz.asc rabbitmq-server.tar.xz.asc
 RUN curl -Lo autocluster.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/autocluster-${RABBITMQ_AUTOCLUSTER_VERSION}.ez
 RUN curl -Lo rabbitmq_aws.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/rabbitmq_aws-${RABBITMQ_AUTOCLUSTER_VERSION}.ez
-RUN mkdir -p "$RABBITMQ_HOME"
-RUN tar --extract --verbose --file rabbitmq-server.tar.xz --directory "$RABBITMQ_HOME" --strip-components 1
-RUN rm rabbitmq-server.tar.xz*
+# RUN mkdir -p "$RABBITMQ_HOME"
+# RUN tar --extract --verbose --file rabbitmq-server.tar.xz --directory "$RABBITMQ_HOME" --strip-components 1
+# RUN rm rabbitmq-server.tar.xz*
 RUN grep -qE '^SYS_PREFIX=\$\{RABBITMQ_HOME\}$' "$RABBITMQ_HOME/sbin/rabbitmq-defaults"
 RUN sed -ri 's!^(SYS_PREFIX=).*$!\1!' "$RABBITMQ_HOME/sbin/rabbitmq-defaults"
 RUN grep -qE '^SYS_PREFIX=$' "$RABBITMQ_HOME/sbin/rabbitmq-defaults"
